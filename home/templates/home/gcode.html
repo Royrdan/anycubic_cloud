@@ -1,0 +1,54 @@
+
+<img class='gcode_dialog_img' src='{{gcode.img}}'/><br>
+<p1 class='info_text'>
+    <strong>{{gcode.name}}</strong><br>
+    <br>
+    <strong>Print Time:</strong> {{gcode.estimate}} mins<br>
+    <strong>Resin Use:</strong> {{gcode.supplies_usage}} mls<br>
+    <strong>Price:</strong> ${{gcode.price}}<br>
+    <strong>Model:</strong> {{gcode.model}}<br>
+    <strong>Uploaded:</strong> {{gcode.create_time}}<br>
+    <strong>ID:</strong> {{gcode.id}}<br>
+    <br><br>
+    <strong>Print Paramaters:</strong><br>
+    <br>
+    <strong>Bottom Layers:</strong> {{gcode.bottom_layers}}<br>
+    <strong>Bottom Time:</strong> {{gcode.bottom_time}} secs<br>
+    <strong>Total Layers:</strong> {{gcode.layers}}<br>
+    <strong>Off / On Time:</strong> {{gcode.off_time}} / {{gcode.on_time}} secs<br>
+    <strong>Down Speed:</strong> {{gcode.z_down_speed}} mm/s<br>
+    <strong>Layer Thickness:</strong> {{gcode.z_thick}} mm<br>
+    <strong>Up Height:</strong> {{gcode.z_up_height}} mm<br>
+    <strong>Up Speed:</strong> {{gcode.z_up_speed}} mm<br>
+    <br>
+    <strong>Sliced ID:</strong> {{gcode.sliced_id}}
+</p1>
+<br>
+<br>
+<div>
+    <input type='hidden' name='action' value='print'>
+    <input type='hidden' name='gcode_id' value='{{gcode.id}}' class='gcode_id'>
+    <input type='hidden' name='gcode_name' value='{{gcode.name}}' class='gcode_name'>
+    <button class='print_button'>Print</button>
+</div>
+
+<form action='/gcode/{{gcode.id}}' method='post'>
+    {% csrf_token %}
+    <input type='hidden' name='action' value='delete'>
+    <button class='delete_button'>Delete</button>
+</form>
+
+
+<script>
+    // Print Button Clicked
+    $('button.print_button').click(function() {
+        $('#info_dialog').fadeOut();
+        print_button_clicked( $(this) );
+    });
+
+    // Delete Button Clicked
+    $('button.delete_button').click(function(event) {
+        $('#info_dialog').fadeOut();
+        delete_button_clicked( event, $(this) );
+    });
+</script>

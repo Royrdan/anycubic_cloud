@@ -1,0 +1,30 @@
+<h2>Printers</h2>
+{% for printer in printers %}
+    <div class='printer_container'>
+        <div class='printer'>
+            <div class='printer_img'>
+                <a class='printer_link' href='/printer/{{printer.id}}'>
+                    <img src='{{printer.img}}'/>
+                </a>
+            </div>
+            <div class='printer_details'>
+                <a class='printer_link' href='/printer/{{printer.id}}'>
+                    <div>
+                        <p1>{{printer.name}}</p1><br>
+                        <p1>Printing: {{printer.is_printing}}</p1><br>
+                        <p1>Status: {{printer.reason}}</p1><br>
+                        <p1>Updated: {{printer.last_update_time}}</p1><br>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+
+
+<script>
+    // Info Dialog
+    $('.printer_link, .gcode_link').click(function(event) {
+        load_detail_view(event, $(this) );
+    });
+</script>

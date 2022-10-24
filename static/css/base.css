@@ -1,0 +1,205 @@
+:root {
+    --default-transition: 0.3s;
+    --ripple-thick: 7px;
+    --ripple-size: 100px;
+    --background-color: rgb(31, 34, 41);
+    --item-background-color: rgba(50, 55, 66, 1);
+    --text-color: rgb(200, 200, 200);
+    --highlight-color: rgb(31, 34, 41);
+    --border-radius: 5px;
+    --box-shadow: 5px 5px 10px black;
+    --default-margin: 25px;
+    --default-padding: 15px;
+    --item-height: 150px;
+    --landscape-item-height: 150px;
+    --item-width: 150px;
+    --normal-font-size: 14px;
+    --default-shadow-left: 3px;
+    --default-shadow: var(--default-shadow-left) 3px 3px black;
+    --default-border-color: rgba(50, 55, 66, 1);
+    --default-border-width: 2px;
+    --default-border-radius: 2px;
+    --button-border-color: hsla(0, 0%, 80%, 0.9);
+}
+
+body {
+    font-family: sans-serif;
+    background-color: var(--background-color);
+}
+
+a, h1, h2, h3, p1, p2, p3, label, input{
+    text-decoration: None;
+    color: var(--text-color);
+}
+
+a:hover {
+    text-decoration: None;
+}
+
+h1 {
+    padding-left: var(--default-padding);
+}
+
+button {
+    transition: var(--default-transition);
+    border-width: 0px;
+    background-color: var(--item-background-color);
+    color: var(--text-color);
+    border-style: solid;
+    border-color: var(--button-border-color);
+}
+
+button:hover, .gcode_name:hover {
+    background-color: var(--highlight-color);
+}
+
+/* Used for the popup images */
+img.printer_dialog_img, img.gcode_dialog_img {
+    display: block;
+    margin: auto;
+    height: 200px;
+    width: 200px;
+    object-fit: contain;
+}
+
+.taskbar_button {
+    transition: var(--default-transition);
+    text-align: center;
+    cursor: pointer;
+}
+.taskbar_button:hover {
+    background-color: var(--highlight-color);
+}
+
+#taskbar_job_progress {
+    text-align: left;
+}
+
+p1.current_job {
+    padding-left: var(--default-padding);
+}
+
+p1.upload_message {
+    text-align: center;
+    display: block;
+    position: relative;
+    top: 35%;
+    font-size: 24px;
+}
+
+nav {
+    background-color: var(--item-background-color);
+    display: grid;
+    grid-template-columns: 70% 10% 10% 10%;
+}
+
+li {
+    display: inline;
+}
+
+.overlay {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 100%;
+    width: 100%;
+    display: None;
+    z-index: 100;
+}
+
+
+div#select_block {
+    display: None;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 98;
+}
+
+.dialog {
+    height: auto;
+    width: auto;
+    padding: 50px;
+    border-radius: var(--border-radius);
+    background-color: var(--background-color);
+    box-shadow: var(--box-shadow), -1px -1px 10px black;
+    overflow: scroll;
+    max-height: 90vh;
+}
+
+p1.dialog_header {
+    display: block;
+    position: relative;
+    top: -30px;
+    text-align: center;
+}
+
+p1.info_text {
+    display: block;
+    text-align: center;
+}
+
+div.test_return_data_container {
+    max-height: 200px;
+    overflow: scroll;
+}
+
+form.login_form {
+    margin: var(--default-margin);
+}
+
+
+
+
+.lds-ripple {
+    display: inline-block;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: var(--ripple-size);
+    height: var(--ripple-size);
+}
+.lds-ripple div {
+    position: absolute;
+    border: var(--ripple-thick) solid var(--text-color);
+    opacity: 1;
+    border-radius: 50%;
+    animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+}
+.lds-ripple div:nth-child(2) {
+    animation-delay: -0.5s;
+}
+@keyframes lds-ripple {
+    0% {
+        top: calc(50% - var(--ripple-thick));;
+        left: calc(50% - var(--ripple-thick));;
+        width: 0;
+        height: 0;
+        opacity: 0;
+    }
+    4.9% {
+        top: calc(50% - var(--ripple-thick));;
+        left: calc(50% - var(--ripple-thick));
+        width: 0;
+        height: 0;
+        opacity: 0;
+    }
+    5% {
+        top: calc(50% - var(--ripple-thick));;
+        left: calc(50% - var(--ripple-thick));;
+        width: 0;
+        height: 0;
+        opacity: 1;
+        }
+    100% {
+        top: calc(var(--ripple-thick) *-1);
+        left: calc(var(--ripple-thick)  *-1);
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+    }
+}

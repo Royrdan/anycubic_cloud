@@ -1,0 +1,21 @@
+{% for job in current_jobs_detail %}
+    <p1 class='dialog_header'>{{job.gcode_name}}<p1><br>
+
+    <p1 class='info_text'>{{job.progress}}% Complete</p1><br>
+
+    <p1 class='info_text'>
+        Last Updated: {{job.last_update_time}}<br>
+        Paused: {{job.pause}}<br>
+        Status: {{job.print_status}}<br>
+        Started: {{job.start_time}}<br>
+    </p1>
+{% endfor %}
+<button id='all_jobs'>All Jobs</button>
+
+
+<script>
+    // All Jobs Dialog
+    $('button#all_jobs').click(function(event){
+        show_all_jobs();
+    });
+</script>

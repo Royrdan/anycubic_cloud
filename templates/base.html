@@ -1,0 +1,270 @@
+{% load static %}
+<!doctype html>
+
+<html>
+
+    <head>
+        <title>Anycubic Cloud</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+        <link rel='stylesheet' href='{%static "/css/base.css"%}'/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    </head>
+
+
+
+    <body>
+        <!-- Taskbar -->
+        {% if name %}
+            <nav>
+                <div class='taskbar_button' id='taskbar_job_progress'> <!-- Need to make something for a list of different jobs here -->
+                    <!-- taskbar_job_progress.html -->
+                </div>
+                <p1 class='taskbar_button' id='taskbar_upload'>Upload</p1>
+                <p1 class='taskbar_button' id='taskbar_test'>Testing</p1>
+                <a href="{% url 'logout_view' %}" class='taskbar_button'><p1 id='logout'>Logout</p1></a>
+            </nav>
+        {% endif %}
+
+        <div id='select_block'></div>
+
+        <!-- Message Overlay -->
+        <div id='message_dialog' class='overlay dialog'>
+            <p1 class='info_text' id='message_text'>Add message here</p1>
+        </div>
+
+        <!-- Uploading Overlay -->
+        <div id='upload_dialog' class='overlay dialog'>
+            <p1 class='upload_message'>Uploading</p1>
+            <div class="lds-ripple"><div></div><div></div></div>
+        </div>
+
+        <!-- Upload Form -->
+        <div id='upload_form' class='overlay dialog'>
+            <p1 class='dialog_header'>Upload File</p1>
+            <form action='upload/' method='post' enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="file" name="filename" required="" id="filename" accept='.pwmb' class='dialog_input dialog_input_button'>
+                <button type='submit' id='upload'>Upload</button>
+            </form>
+        </div>
+
+        <!-- MAKE THIS INTO A REQUEST IN THE FUTURE AS IT WONT UPDATE AT ALL AT THIS POINT-->
+        <!-- Printer Select -->
+        <div id='printer_select' class='overlay dialog'>
+            <p1 id='printer_select_header' class='dialog_header'>Print GCODE_FILE</p1>
+            <br>
+            <form action='/gcode/GCODE' method='post' id='printer_select_form'>
+                {% csrf_token %}
+                <input type='hidden' name='action' value='print'/>
+                <input type='hidden' name='gcode_id' id='gcode_id' value='GCODE'/>
+                <label for='printer_select'>Printer:</label>
+                <select name='printer_id' id='printer_select'>
+                    {% for printer in printers %}
+                        <option value='{{printer.id}}'>{{printer.name}}</option>
+                    {% endfor %}
+                </select>
+                <button id='print_now'>Print</button>
+            </form>
+        </div>
+
+        <!-- Info PRINTER / GCODE / JOB Dialog -->
+        <div id='info_dialog' class='overlay dialog'>
+            <!-- CONTENT HERE -->
+        </div>
+
+        <!-- Testing Form -->
+        <div id='testing_form' class='overlay dialog'>
+            <p1 class='dialog_header'>Testing</p1>
+            <form action='/test/' method='post'>
+                {% csrf_token %}
+                <label for='category'>Category</label>
+                <input type='text' name='category'/>
+                <br>
+                <label for='command'>Command</label>
+                <input type='text' name='command'/>
+                <br>
+                <label for='data'>Data</label>
+                <input type='text' name='data'/>
+                <p1 class='info_text'>Data must be in the form variable=value seperated by a space</p1>
+                <br>
+                <button type='submit' id='test_button'>Test</button>
+            </form>
+            <div class=test_return_data_container>
+                <p1 id='test_return_data'></p1>
+            </div>
+        </div>
+
+        <!-- Job Current Progress Dialog -->  <!-- STILL NEED TO FIX FOR MULTIPLE PRINT JOBS. Might need to make it dynamic ajax like printers and gcode -->
+        <div id='current_job_dialog' class='overlay dialog'>
+            <!--current_job_list.html-->
+        </div>
+
+        <!-- All Jobs Dialog -->
+        <div id='all_jobs_dialog' class='overlay dialog'>
+            <!--job_list.html-->
+        </div>
+
+        <!--Main Body -->
+        <main>
+            <h1>Anycubic Cloud</h1>
+            {% block content %}
+            <!-- CONTENT -->
+            {% endblock %}
+        </main>
+    </body>
+
+
+
+    <script type='text/javascript'>
+
+        // Dialog function
+        function show_dialog(dialog) {
+            $('main').css('filter', 'blur(4px)');
+            $('#select_block').fadeIn();
+            dialog.fadeIn();
+        };
+
+        // Print Button Clicked Function - For reuse in popups
+        function print_button_clicked(this_item) {
+            $('#printer_select_form').attr( 'action', "/gcode/" + this_item.siblings('input.gcode_id').val() );
+            $('#gcode_id').val(this_item.siblings('input.gcode_id').val() );
+            $('#printer_select_header').text( 'Print ' + this_item.siblings('input.gcode_name').val() );
+            console.log('Print ' + this_item.siblings('input.gcode_name').val());
+            show_dialog( $('#printer_select') );
+        };
+
+        // Delete Button Clicked Function - For reuse in popups
+        function delete_button_clicked(event, this_item) {
+            event.preventDefault();
+            $.post(
+                url=this_item.parent().attr('action'),
+                data={
+                    'csrfmiddlewaretoken': this_item.siblings('input[name=csrfmiddlewaretoken]').val(),
+                    'action': 'delete'
+                },
+                function(data, status) {
+                    if (status == 'success') {
+                        load_gcode_list();
+                        $('#message_text').text( data );
+                        show_dialog( $('#message_dialog') );
+                    }
+                }
+            );
+        };
+
+        // Load Gcode/Printer/Job detail view
+        function load_detail_view(event, this_item){
+            event.preventDefault();
+            target = this_item.attr('href');
+            dialog = $('#info_dialog');
+            $.get(
+                url=target,
+                function(data, status) {
+                    if (status == 'success') {
+                        dialog.html(data);
+                        show_dialog( dialog );
+                    }
+                }
+            )
+        };
+
+        function show_all_jobs() {
+            $.get(
+                url="{% url 'job_list' %}",
+            function(data, status){
+                if (status == 'success') {
+                    $('#all_jobs_dialog').html(data);
+                }
+            })
+            $('#current_job_dialog').fadeOut();
+            show_dialog( $('#all_jobs_dialog') );
+        };
+
+        // Show a message
+        {% if message %}
+            $(document).ready( function() {
+                $('#message_text').text( '{{message}}' );
+                show_dialog( $('#message_dialog') );
+            });
+        {% endif %}
+
+        // Taskbar Buttons Clicked
+        $('#taskbar_upload').click( function() {show_dialog( $('#upload_form') );});
+        $('#taskbar_test').click(function() {show_dialog( $('#testing_form') );});
+
+        // All Jobs Dialog
+        $('button#all_jobs').click(function(event){
+            show_all_jobs();
+        });
+
+
+        // Test Button Clicked
+        $('#test_button').click( function(event) {
+            event.preventDefault();
+            this_item = $(this);
+            $.post(
+                url="{% url 'test'%}",
+                data={
+                    'csrfmiddlewaretoken': this_item.siblings('input[name=csrfmiddlewaretoken]').val(),
+                    'category': this_item.siblings('input[name=category]').val(),
+                    'command': this_item.siblings('input[name=command]').val(),
+                    'data': this_item.siblings('input[name=data]').val()
+                },
+                function(data, status) {
+                    if (status == 'success') {
+                        $('#test_return_data').text( data );
+                    }else{
+                        $('#test_return_data').text( 'Returned invalid data' );
+                    }
+
+                }
+            )
+        });
+
+        // UploadNow Button Clicked
+        $('#upload').click( function() {
+            if ($('#filename').val() != '') {
+                $('#upload_form').fadeOut();
+                show_dialog( $('#upload_dialog') );
+            }
+        });
+
+        // Dialog Hide function
+        $('#select_block').click(function(event){
+            $('main').css('filter', 'blur(0px)');
+            $('#select_block').fadeOut();
+            $('.dialog').fadeOut();
+        });
+
+        // Print NOW Clicked
+        $('#print_now').click(function(event){
+            event.preventDefault();
+            this_item = $(this);
+            $.post(
+                url=this_item.parent().attr('action'),
+                data={
+                    'csrfmiddlewaretoken': this_item.siblings('input[name=csrfmiddlewaretoken]').val(),
+                    'action': 'print',
+                    'printer_id': this_item.siblings('select[name=printer_id]').val(),
+                    'gcode_id': this_item.siblings('input[name=gcode_id]').val()
+                },
+                function(data, status) {
+                    if (status == 'success') {
+                        $('.dialog').fadeOut();
+                        $('#message_text').text( data );
+                        show_dialog( $('#message_dialog') );
+                    }else{
+                        $('.dialog').fadeOut();
+                        $('#message_text').text( data );
+                        show_dialog( $('#message_dialog') );
+                    }
+                }
+            )
+        });
+
+    </script>
+
+
+
+
+</html>

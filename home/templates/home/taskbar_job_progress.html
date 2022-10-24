@@ -1,0 +1,27 @@
+{% if current_jobs %}
+    {% for job in current_jobs %}
+        <p1 class='current_job'>Printing: {{job.gcode_name}} {{job.progress}}% Complete</p1>
+    {% endfor %}
+{% else %}
+    <p1 class='current_job'>No Current Jobs</p1>
+{% endif %}
+
+
+<script>
+    // Current Jobs Dialog
+    $('#taskbar_job_progress').click(function(event){
+        if ($(this).children('p1').text() == 'No Current Jobs') {
+            show_all_jobs();
+        }else{
+            console.log('running get current job code')
+            $.get(
+                url="{% url 'current_job_detail_list' %}",
+            function(data, status){
+                if (status == 'success'){
+                    $('#current_job_dialog').html(data);
+                };
+            });
+            show_dialog( $('#current_job_dialog') );
+        }
+    });
+</script>

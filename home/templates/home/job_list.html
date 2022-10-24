@@ -1,0 +1,30 @@
+<p1 class='dialog_header'>Print Jobs</p1><br>
+{% if jobs %}
+    <div class='jobs_list'>
+        {% for job in jobs %}
+            <div class='job_container'>
+                <div class='job'>
+                    <div class='job_img'>
+                        <img class='job_img' src='{{job.img}}'/>
+                    </div>
+                    <div class='job_details'>
+                        <p1 class='info_text'>
+                            <strong>{{job.gcode_name}}</strong><br>
+                            ID: {{job.id}}<br>
+                            Estimate: {{job.estimate}}<br>
+                            Material: {{job.material}}<br>
+                            Paused: {{job.pause}}<br>
+                            Progress: {{job.progress}}<br>
+                            Status: {{job.status}}<br>
+                            Started: {{job.start_time}}<br>
+                            End Time: {{job.end_time}}<br>
+                            Last Updated: {{job.last_update_time}}<br>
+                        </p1>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p1 class='dialog_header'>There are no current or previous jobs</p1>
+{% endif %}

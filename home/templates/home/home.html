@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<link rel='stylesheet' href='{%static "/css/home.css"%}'/>
+
+<p1 class='welcome_header'>Welcome {{name}}</p1>
+
+<!-- Printer List -->
+<div class='printer_list' id='printer_list'>
+    <!--load_printer_list()-->
+</div>
+
+<!-- Gcode List -->
+<div class='gcode_list' id='gcode_list'>
+    <!--load_gcode_list()-->
+</div>
+
+<script type='text/javascript'>
+    $( document ).ready(function(){
+        load_printer_list();
+        load_gcode_list();
+        load_current_job_list();
+    });
+
+    setInterval(function(){
+        load_current_job_list();
+    }, 30000);
+    setInterval(function(){
+        load_gcode_list();
+        load_printer_list();
+    }, 200000);
+
+    function load_printer_list(){
+        console.log('getting printer listing')
+        $.get(
+            url="{% url 'printer_list' %}",
+            function(data, status) {
+                if (status == 'success'){
+                    $('#printer_list').html(data)
+                }
+            }
+        );
+    };
+
+    function load_gcode_list(){
+        console.log('getting gcode listing')
+        $.get(
+            url = {% url 'gcode_list' %},
+            function(data, status){
+                if (status == 'success'){
+                    $('#gcode_list').html(data)
+                }
+            }
+        );
+    };
+
+    function load_current_job_list(type){
+        console.log('getting current job listing')
+        $.get(
+            url = {% url 'current_job_list' %},
+            function(data, status){
+                if (status == 'success'){
+                    $('#taskbar_job_progress').html(data)
+                }
+            }
+        );
+    };
+
+    function load_current_job_detail_list(type){
+        console.log('getting current job detail listing')
+        $.get(
+            url = {% url 'current_job_detail_list' %},
+            function(data, status){
+                if (status == 'success'){
+                    $('#taskbar_job_progress').html(data)
+                }
+            }
+        );
+    };
+
+
+</script>
+
+{% endblock %}

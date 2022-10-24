@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<form method=post class='login_form'>
+    {% csrf_token %}
+    {% if error %}
+        <p1>{{ error }}</p1><br><br>
+    {% endif %}
+    <label for='email'>Email</label>
+    <input type='text' name='email' id='email'>
+    <br>
+    <label for='password'>Password</label>
+    <input type='password' name='password' id='password'>
+    <br>
+    <button type='submit'>Login</button>
+</form>
+{% endblock %}

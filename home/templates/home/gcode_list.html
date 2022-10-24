@@ -1,0 +1,45 @@
+<h2>Print Files</h2>
+{% for gcode in gcodes %}
+    <div class='gcode_container'>
+        <div class='gcode'>
+            <div class='gcode_img'>
+                <a class='gcode_link' href='/gcode/{{gcode.id}}'>
+                    <img src='{{gcode.img}}'/>
+                </a>
+            </div>
+            <div class='gcode_details'>
+                <a class='gcode_link' href='/gcode/{{gcode.id}}'>
+                    <p1 class='gcode_name'>{{gcode.name|truncatechars:19}}</p1>
+                </a>
+                <div>
+                    <input type='hidden' name='action' value='print'>
+                    <input type='hidden' name='gcode_id' value='{{gcode.id}}' class='gcode_id'>
+                    <input type='hidden' name='gcode_name' value='{{gcode.name}}' class='gcode_name'>
+                    <button class='print_button'>Print</button>
+                </div>
+                <form action='/gcode/{{gcode.id}}' method='post'>
+                    {% csrf_token %}
+                    <input type='hidden' name='action' value='delete'>
+                    <button class='delete_button'>Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+
+<script type='text/javascript'>
+    // Print Button Clicked
+    $('button.print_button').click(function() {
+        print_button_clicked( $(this) );
+    });
+
+    // Delete Button Clicked
+    $('button.delete_button').click(function(event) {
+        delete_button_clicked( event, $(this) );
+    });
+
+    // Printer / GCODE Info Dialog
+    $('.printer_link, .gcode_link').click(function(event) {
+        load_detail_view(event, $(this) );
+    });
+</script>
