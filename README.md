@@ -26,6 +26,7 @@ Follow these steps in the folder you would like to install the server
     source bin/activate
     pip3 install django
     python3 -m pip install --upgrade pip
+    pip3 install django-crispy-forms
     mkdir src
     cd src
     django-admin startproject anycubic_cloud
@@ -41,6 +42,6 @@ Lastly while still inside the virtual environment run the django server with
 
 The server should be running and go to localhost:8000 in your web browser. Login to your anycubic account and everything should be setup.
 
-Please let me know if I have any mistakes with the instructions as I have done them out of memory.
+Please let me know if I have any mistakes with the instructions as I have done them out of memory. There may have been something I forgot or missed. Thanks
 Also please let me know any improvements / issues.
 If you can figure out the delete command let me know.
