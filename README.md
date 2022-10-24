@@ -9,6 +9,8 @@ The features so far include:
 - Start prints and select the specific printer attached to your anycubic cloud account to print to
 - See printers and their status / information
 - See current job information, status and time remaining
+- See previous prints and times and information
+- Upload new print files to the cloud in PWMB format ready to print
 
 Please note this is still quite new and IN PRODUCTION. There will probably be issues and teething problems. I have uploaded this for anyone that might be interested and I am stil producing it. It is NOT READY FOR PRODUCTION and you will probably need to know and understand some basic Python Django setup instructions to get this running.
 
