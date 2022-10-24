@@ -31,7 +31,10 @@ Follow these steps in the folder you would like to install the server
     django-admin startproject anycubic_cloud
     
 After the project has been created. Open the file under "src/anycubic_cloud/anycubic_cloud/settings.py" and go to the line that starts with SECRET_KEY and copy the secret key.
-Copy the contents of the github directory into the "src/anycubic_cloud/anycubic_cloud/" directory the re-edit the settings.py file and add your SECRET_KEY to the line.
+
+Copy the contents of the github directory into the "src/anycubic_cloud/" directory. You should have src/anycubic_cloud/anycubic_cloud/ this is correct!
+
+Re-edit the settings.py file and add your SECRET_KEY to the line.
 
 Lastly while still inside the virtual environment run the django server with
     python3 anycubic_cloud/manage.py
