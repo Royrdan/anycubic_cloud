@@ -1,4 +1,4 @@
-# Anycubic Cloud API
+# Anycubic Cloud API [BETA IN PRODUCTION]
 Cloud API and web server to control Anycubic Cloud server
 Anycubic has been quite slack in creating a cloud server that you can control online. They have an app that you can use to start prints and see status of prints and print files etc. But it does not work on a PC nor does it allow uploading of files without the Anycubic software which is also quite limited.
 
