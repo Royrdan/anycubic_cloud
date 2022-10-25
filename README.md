@@ -40,7 +40,7 @@ Copy the contents of the github directory into the "src/anycubic_cloud/" directo
 Re-edit the settings.py file and add your SECRET_KEY to the line.
 
 Lastly while still inside the virtual environment run the django server with
-    python3 anycubic_cloud/manage.py
+    python3 anycubic_cloud/manage.py runserver
 
 The server should be running and go to localhost:8000 in your web browser. Login to your anycubic account and everything should be setup.
 
