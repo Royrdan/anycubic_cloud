@@ -28,7 +28,7 @@ Follow these steps in the folder you would like to install the server
     source bin/activate
     pip3 install django
     python3 -m pip install --upgrade pip
-    pip3 install django-crispy-forms
+    pip3 install django-crispy-forms requests pyyaml notify2
     mkdir src
     cd src
     django-admin startproject anycubic_cloud
