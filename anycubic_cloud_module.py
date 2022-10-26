@@ -1,4 +1,4 @@
-import os.path
+import os
 import requests as req
 import sys
 from urllib.parse import unquote as url_decode
@@ -128,8 +128,9 @@ class anycubic_cloud_session():
         self.current_jobs_last_updated = None
 
         self.base_url = "https://api.cloud.anycubic.com/"
-        self.api = get_api("/home/royrdan/Documents/python/scripts/anycubic_cloud/api_endpoints.yaml")
-        self.error_file = "/home/royrdan/Documents/python/errors.txt"
+        local_path = os.getcwd()
+        self.api = get_api(f"{local_path}/api_endpoints.yaml")
+        self.error_file = f"{local_path}/errors.txt"
         notify2.init('Anycubic Cloud Uploader')
 
     def command(self, category, command, params=None, postfix="", **kwargs):
