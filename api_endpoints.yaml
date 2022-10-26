@@ -1,0 +1,313 @@
+user:
+    get_label:
+        endpoint: api/user/profile/getUserlabel
+        method: GET
+    get_info2:
+        endpoint: api/portal/userInfo
+        method: POST
+    get_info:
+        endpoint: api/portal/user/info
+        method: GET
+        variables:
+            user_id
+    register:
+        endpoint: api/user/public/register
+        method: POST
+        variables:
+            username
+            password
+            verification_code
+            message_key
+            device_type
+            jump
+    reset_password:
+        endpoint: api/user/public/passwordReset
+        method: POST
+        variables:
+            username
+            password
+            verification_code
+    change_password:
+        endpoint: api/user/profile/changePassword
+        method: POST
+        variables:
+            old_password
+            password
+            confirm_password
+    send_verification_code:
+        endpoint: api/user/verification_code/send
+        method: POST
+        variables:
+            username
+            type
+    login:
+        endpoint: api/user/public/login
+        method: POST
+        variables:
+            username
+            password
+            device_type
+            login_type
+    logout:
+        endpoint: api/user/public/logout
+        method: POST
+    bind_email:
+        endpoint: api/user/profile/bindingEmail
+        method: POST
+        variables:
+            email
+            password
+            verification_code
+    get_messages:
+        endpoint: api/user/message/getMessages
+        method: GET
+        variables:
+            page
+            type
+    get_likes:
+        endpoint: api/user/Likes/mylikes
+        method: GET
+        variables:
+            page
+    upload_one:
+        endpoint: api/user/upload/one
+        method: POST
+        variables:
+            MULTIPART
+
+
+
+printer:
+    add:
+        endpoint: api/work/work/addprinter
+        method: POST
+        variables:
+            key
+            name
+    info:
+        endpoint: api/work/printer/Info
+        method: POST
+        variables:
+            id
+    get:
+        endpoint: api/work/printer/getPrinters
+        method: GET
+        variables:
+            page
+    status:
+        endpoint: api/work/printer/Printers_status
+        method: GET
+    get2:
+        endpoint: api/work/index/printers
+        method: GET
+        variables:
+            printer_id
+            print_status
+            year
+    unset:
+        endpoint: api/work/printer/unsetprinters
+        method: GET
+        variables:
+            id
+
+
+
+gcode:
+    upload:
+        endpoint: api/user/profile/getUploadUrl?
+        method: GET
+    get_gcodes:
+        endpoint: api/work/gcode/getGcodes
+        method: GET
+        variables:
+            page
+    rename:
+        endpoint: api/work/gcode/info
+        method: POST
+        variables:
+            id
+            name
+    send_gcode:
+        endpoint: api/work/work/send_gcode
+        method: POST
+        variables:
+            filename
+            slice_param
+            matrix
+            mirror
+            slice_support
+    get_gcode_status:
+        endpoint: api/work/work/get_gcode_status
+        method: POST
+        variables:
+            task_id
+    # api/work/work/delete
+    # api/work/work/unsetworks
+    # api/work/work/unset
+    # api/work/delete
+    # api/work/gcode/delete
+    # api/work/gcode/delete/{id}
+    # api/work/delete/{id}
+    # api/work/gcode/delete
+    # api/work/gcode/unsetworks
+    # api/work/gcode/unset
+    # api/work/work/unsetgcodes
+    # api/work/gcode/unsetgcodes
+    delete:
+        endpoint: api/work/gcode/unsetgcodes
+        method: GET
+        variables:
+            id
+
+    print:
+        endpoint: api/work/work/send_order
+        method: POST
+        variables:
+            gcode_id
+            printer_id
+            project_id
+            order_id
+            type
+            settings
+    unslice:
+        endpoint: api/work/gcode/unsetgcodes
+        method: GET
+        variables:
+            id
+
+
+
+video:
+    stop:
+        endpoint: api/user/profile/stopVideo
+        method: GET
+        variables:
+            printer_id
+    get_url:
+        endpoint: api/user/profile/getVideoUrl
+        method: GET
+        variables:
+            printer_id
+
+
+
+jobs:
+    get_type:
+        endpoint: api/work/work/get_type
+        method: GET
+    get_favourites:
+        endpoint: api/work/index/projectsapi/user/favorites/my
+        method: GET
+        variables:
+            page
+    get_jobs:
+        endpoint: api/work/project/getProjects
+        method: GET
+        variables:
+            page
+            print_status
+            gcode_id
+    delete:
+        endpoint: api/work/project/unsetprojects
+        method: GET
+        variables:
+            id
+
+
+
+Portal:
+    protect:
+        pi/portal/index/protect:
+        method: GET
+    feedback:
+        endpoint: api/portal/index/feedback_mobile
+        method: POST
+    search:
+        endpoint: api/portal/search
+        method: GET
+    hot_tags:
+        endpoint: api/portal/tags/hotTags
+        method: GET
+    categories:
+        endpoint: api/portal/categories
+        method: GET
+    get_country:
+        endpoint: api/portal/index/country_mobile
+        method: GET
+
+
+# May be open jobs??
+articles:
+    delete:
+        endpoint: api/portal/articles/delete/{id}
+        method: POST
+        variables:
+            id
+    guess:
+        endpoint: api/portal/articles/guess
+        method: GET
+        variables:
+            category_id
+    get_by_id:
+        endpoint: api/portal/articles/{id}
+        method: GET
+        variables:
+            id
+    get_by_userid:
+        endpoint: api/portal/articles
+        method: GET
+        variables:
+            page
+            user_id
+            category_id
+            relation
+            order
+    get_by_page:
+        endpoint: api/portal/articles/my
+        method: GET
+        variables:
+            page
+    get_favourites:
+        endpoint: api/portal/user/articlesFavorite
+        method: GET
+        variables:
+            page
+            type
+            user_id
+    like:
+        endpoint: api/portal/articles/doLike
+        method: POST
+        variables:
+            id
+    unlike:
+        endpoint: api/portal/articles/cancelLike
+        method: POST
+        variables:
+            id
+    add:
+        endpoint: api/portal/articles/add_file
+        method: POST
+        variables:
+            MUTLIPART
+    favourite:
+        endpoint: api/portal/articles/doFavorite
+        method: POST
+        variables:
+            id
+    update_status:
+        endpoint: api/portal/Articles/update_status
+        method: POST
+        variables:
+            id
+            post_status
+    unfavourite:
+        endpoint: api/portal/articles/cancelFavorite
+        method: POST
+        variables:
+            id
+    save_mobile:
+        endpoint: api/portal/articles/save_mobile
+        method: POST
+    update_mobile:
+        endpoint: api/portal/articles/update_mobile
+        method: POST
