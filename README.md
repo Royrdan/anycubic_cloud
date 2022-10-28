@@ -23,24 +23,24 @@ Installation:
 To install you will need Python3 preferably set up in a virtual environment.
 Follow these steps in the folder you would like to install the server
 
+    sudo apt install -y git python3 python3-dev python3-virtualenv python-dbus libdbus-1-dev libglib2.0-dev
     virtualenv anycubic_cloud
     cd anycubic_cloud
     source bin/activate
-    pip3 install django
     python3 -m pip install --upgrade pip
-    pip3 install django-crispy-forms requests pyyaml notify2
+    pip3 install django django-crispy-forms requests pyyaml desktop-notifier
     mkdir src
     cd src
+    git clone https://github.com/Royrdan/anycubic_cloud
+    mv anycubic_cloud anycubic_cloud_repo
     django-admin startproject anycubic_cloud
-    
-After the project has been created. Open the file under "src/anycubic_cloud/anycubic_cloud/settings.py" and go to the line that starts with SECRET_KEY and copy the secret key.
-
-Copy the contents of the github directory into the "src/anycubic_cloud/" directory. You should have src/anycubic_cloud/anycubic_cloud/ this is correct!
-
-Re-edit the settings.py file and add your SECRET_KEY to the line.
-
-Lastly while still inside the virtual environment run the django server with
-    python3 anycubic_cloud/manage.py runserver
+    SECRET_KEY=$(grep -h "SECRET_KEY" anycubic_cloud/anycubic_cloud/settings.py | sed 's/.* = //')
+    cp -r anycubic_cloud_repo/* anycubic_cloud
+    rm -rf anycubic_cloud_repo
+    sed -i "s/SECRET_KEY = <SECRET_KEY_HERE>/# SECRET_KEY = <see bottom of file>/" anycubic_cloud/anycubic_cloud/settings.py
+    echo "SECRET_KEY = $SECRET_KEY" >> anycubic_cloud/anycubic_cloud/settings.py
+    anycubic_cloud/manage.py migrate
+    anycubic_cloud/manage.py runserver
 
 The server should be running and go to localhost:8000 in your web browser. Login to your anycubic account and everything should be setup.
 
