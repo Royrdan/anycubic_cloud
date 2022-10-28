@@ -5,7 +5,7 @@ from urllib.parse import unquote as url_decode
 from urllib.parse import urlencode
 import hashlib
 import yaml
-import notify2
+from desktop_notifier import DesktopNotifier
 from datetime import datetime
 import json
 
@@ -128,10 +128,11 @@ class anycubic_cloud_session():
         self.current_jobs_last_updated = None
 
         self.base_url = "https://api.cloud.anycubic.com/"
-        local_path = os.getcwd()
-        self.api = get_api(f"{local_path}/api_endpoints.yaml")
-        self.error_file = f"{local_path}/errors.txt"
-        notify2.init('Anycubic Cloud Uploader')
+        local_path = os.path.dirname(__file__)
+
+        self.api = get_api( os.path.join(local_path, "api_endpoints.yaml") )
+        self.error_file = os.path.join(local_path, "errors.txt")
+        notifier = DesktopNotifier()
 
     def command(self, category, command, params=None, postfix="", **kwargs):
 
@@ -230,7 +231,7 @@ class anycubic_cloud_session():
 
     def log_error(self, error):
         print(error)
-        notify2.Notification('Anycubic Cloud', error).show()
+        notifier.send_sync('Anycubic Cloud', error)
         #with open(self.error_file, 'a+') as myfile:
         #    myfile.write(error)
 
@@ -280,7 +281,7 @@ class anycubic_cloud_session():
                 if upload.status_code != 200:
                     log_error(f'Anycubic upload file failed with status code: {upload_data.status_code}')
                 else:
-                    notify2.Notification('File upload was successful', f'{filename} was successfully uploaded').show()
+                    notifier.send_sync('File upload was successful', f'{filename} was successfully uploaded')
                     print("Upload successful")
                 return upload, "Success"
         else:
