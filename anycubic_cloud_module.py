@@ -132,7 +132,7 @@ class anycubic_cloud_session():
 
         self.api = get_api( os.path.join(local_path, "api_endpoints.yaml") )
         self.error_file = os.path.join(local_path, "errors.txt")
-        notifier = DesktopNotifier()
+        self.notifier = DesktopNotifier()
 
     def command(self, category, command, params=None, postfix="", **kwargs):
 
@@ -231,7 +231,7 @@ class anycubic_cloud_session():
 
     def log_error(self, error):
         print(error)
-        notifier.send_sync('Anycubic Cloud', error)
+        self.notifier.send_sync('Anycubic Cloud', error)
         #with open(self.error_file, 'a+') as myfile:
         #    myfile.write(error)
 
@@ -281,7 +281,7 @@ class anycubic_cloud_session():
                 if upload.status_code != 200:
                     log_error(f'Anycubic upload file failed with status code: {upload_data.status_code}')
                 else:
-                    notifier.send_sync('File upload was successful', f'{filename} was successfully uploaded')
+                    self.notifier.send_sync('File upload was successful', f'{filename} was successfully uploaded')
                     print("Upload successful")
                 return upload, "Success"
         else:
